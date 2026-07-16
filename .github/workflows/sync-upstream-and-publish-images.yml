@@ -1,11 +1,12 @@
 # ==============================================================================
 # 文件名称: .github/workflows/sync-upstream-and-publish-images.yml
-# 文件作用: 每日同步 mem0 官方上游 main 到当前 fork main，并构建正式/开发镜像推送至阿里云 ACR。
+# 文件作用: 每日同步 mem0 官方上游 main 到当前 fork main，并构建正式/开发/前端镜像推送至阿里云 ACR。
 # 触发方式: 定时任务、手动触发、main 分支推送。
 # 依赖配置: CI/CD 环境或仓库级变量/密钥 ACR_USERNAME、ACR_PASSWORD；GITHUB_TOKEN 需要 contents: write。
 # 镜像输出:
 #   - crpi-efmmpn9a6t9mspwy.cn-hangzhou.personal.cr.aliyuncs.com/vancer-saas/mem0
 #   - crpi-efmmpn9a6t9mspwy.cn-hangzhou.personal.cr.aliyuncs.com/vancer-saas/mem0-dev
+#   - crpi-efmmpn9a6t9mspwy.cn-hangzhou.personal.cr.aliyuncs.com/vancer-saas/mem0-dashboard
 # ==============================================================================
 
 name: Sync upstream and publish images
@@ -98,6 +99,11 @@ jobs:
             image_name: mem0-dev
             context: .
             dockerfile: server/dev.Dockerfile
+            stable_tag: latest
+          - variant: dashboard
+            image_name: mem0-dashboard
+            context: server/dashboard
+            dockerfile: server/dashboard/Dockerfile
             stable_tag: latest
     environment: "CI/CD"
     permissions:
